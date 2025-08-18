@@ -19,7 +19,7 @@ public:
 	FBlackboardKeySelector TargetActorKey;   
 
 	UPROPERTY(EditAnywhere, Category="Flee")
-	float FleeDistance = 1000.f;            
+	float FleeDistance = 2000.f;            
 
 	UPROPERTY(EditAnywhere, Category="Flee")
 	float JitterRadius = 250.f;            

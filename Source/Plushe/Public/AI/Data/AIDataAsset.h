@@ -11,7 +11,7 @@ enum class EPlusheState : uint8
 {
 	Aggressive UMETA(DisplayName = "Aggressive"),
 	Fearful    UMETA(DisplayName = "Fearful"),
-	Friendly   UMETA(DisplayName = "Friendly")
+	Tamed   UMETA(DisplayName = "Tamed")
 };
 
 UCLASS(BlueprintType)

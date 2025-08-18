@@ -17,10 +17,7 @@ class PLUSHE_API APlusheAIController : public AAIController
 
 public:
 	APlusheAIController();
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Plushe|Config")
-	UAIDataAsset* AIDataAsset;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Plushe|Behavior")
 	EPlusheState PlusheState = EPlusheState::Aggressive;
 

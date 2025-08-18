@@ -33,6 +33,10 @@ void APlusheAIController::OnPossess(APawn* InPawn)
 
 void APlusheAIController::UpdateData()
 {
+	auto BasePlushe = Cast<ABasePlushe>(GetPawn());
+	if(!BasePlushe) return;
+
+	const auto AIDataAsset = BasePlushe->AIDataAsset;
 	if(!AIDataAsset) return;
 
 	const auto BaseCharacter = Cast<ACharacter>(GetPawn());
@@ -62,8 +66,13 @@ void APlusheAIController::UpdateData()
 void APlusheAIController::UpdatePlusheState(EPlusheState NewPlusheState)
 {
 	PlusheState = NewPlusheState;
-	if(auto BlackboardComponent = GetBrainComponent()->GetBlackboardComponent())
+	auto BlackboardComponent = GetBrainComponent()->GetBlackboardComponent();
+	if(!BlackboardComponent) return;
+	
+	BlackboardComponent->SetValueAsEnum("PlusheState", static_cast<uint8>(PlusheState));
+	if(NewPlusheState == EPlusheState::Tamed)
 	{
-		BlackboardComponent->SetValueAsEnum("PlusheState", static_cast<uint8>(PlusheState));
+		BlackboardComponent->SetValueAsObject("Master", GetWorld()->GetFirstPlayerController()->GetCharacter());
 	}
 }
+

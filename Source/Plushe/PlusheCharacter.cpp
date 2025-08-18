@@ -9,10 +9,14 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "AI/BasePlushe.h"
+#include "AI/PlusheAIController.h"
 
 
 //////////////////////////////////////////////////////////////////////////
 // APlusheCharacter
+
+class ABasePlushe;
 
 APlusheCharacter::APlusheCharacter()
 {
@@ -66,6 +70,30 @@ void APlusheCharacter::BeginPlay()
 	}
 }
 
+void APlusheCharacter::Tame()
+{
+	const FVector Start = GetActorLocation() + FVector(0,0, 0);
+
+	const FVector Dir   = GetActorForwardVector();
+	const FVector End   = Start + Dir * 1500.f;
+
+	FHitResult Hit;
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(TameTrace), false, this);
+	Params.AddIgnoredActor(this);
+
+	const bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
+	
+	if (!bHit) return;
+
+	if (ABasePlushe* Plushe = Cast<ABasePlushe>(Hit.GetActor()))
+	{
+		if (APlusheAIController* AC = Cast<APlusheAIController>(Plushe->GetController()))
+		{
+			AC->UpdatePlusheState(EPlusheState::Tamed);
+		}
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 
@@ -83,7 +111,8 @@ void APlusheCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlusheCharacter::Look);
-
+		
+		EnhancedInputComponent->BindAction(TameAction, ETriggerEvent::Triggered, this, &APlusheCharacter::Tame);
 	}
 
 }

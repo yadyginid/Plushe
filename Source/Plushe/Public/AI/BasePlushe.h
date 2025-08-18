@@ -19,6 +19,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 	UBehaviorTree* BehaviorTreeAsset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Plushe|Config")
+	UAIDataAsset* AIDataAsset;
 	
 protected:
 	virtual void BeginPlay() override;
